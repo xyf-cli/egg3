@@ -49,9 +49,8 @@ class AdminController extends Controller {
   }
 
   async detail() {
-    const { ctx, app } = this;
-    const user = await app.mysql.get('user', { id: ctx.params.id });
-    delete user.password;
+    const { ctx, service } = this;
+    const user = await service.user.detailAction(ctx.params);
     ctx.success('查询成功', user);
   }
 

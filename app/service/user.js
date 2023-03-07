@@ -37,11 +37,22 @@ class UserService extends Service {
     };
   }
 
+  async detailAction(params) {
+    const { id } = params;
+    const user = await this.app.mysql.get('user', { id });
+    if (!user) {
+      throw { status: 500, message: '没有此用户' };
+    }
+    delete user.password;
+    return user;
+  }
+
+  // 删除用户
   async deleteAction(params) {
     const { id } = params;
     const user = await this.app.mysql.get('user', { id });
     if (!user) {
-      throw { status: 401, message: '未找到要删除的商品' };
+      throw { status: 500, message: '未找到要删除的用户' };
     }
     await this.app.mysql.delete('user', { id });
   }
